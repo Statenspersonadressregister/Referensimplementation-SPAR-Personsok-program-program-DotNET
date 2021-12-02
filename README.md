@@ -1,15 +1,14 @@
 # Referensimplementation SPAR Personsök program-program
 
-Denna källkod är en referensimplementation av SPAR Personsök program-program version _2019.1_.
+Denna källkod är en referensimplementation av SPAR Personsök program-program version _2021.1_.
 
-Referensimplementationen är skriven för _.NET Core 3.0_ och använder _nuget_ för pakethantering.
+Referensimplementationen är skriven för _.NET Core 5.0_ och använder _nuget_ för pakethantering.
 
 Med hjälp av verktyget _svcutil_ har det skapats en tjänst från wsdl-filen som används för att anropa personsöktjänsten.
 Det går också bra att skapa upp tjänsten via _Visual Studio_ och menyalternativet '_Add Service Reference..._'.
 Utöver det används _NLog_ för att hantera loggningen och _NUnit_ för att hantera enhetstestningen av koden.
 
-För mer detaljer om verksamhetsbegrepp inom SPAR, och även andra tjänster inom SPAR se gränssnittsmanualen som är tillgänglig på
-[SPARs hemsida](https://www.statenspersonadressregister.se).
+För mer information om SPAR på såväl verksamhets- som teknisk nivå se [SPAR:s hemsida](https://www.statenspersonadressregister.se).
 
 ## Användning
 
@@ -21,24 +20,24 @@ _PersonsokTest_ har sex tester som kör mot kundtestmiljön. Dessa verifierar at
 För att köra projektet i Visual Studio, högerklicka på projektet _PersonsokImplementation_ och kör, alternativt debug.
 Om du alternativt använder Visual Studio Code så exekverar du följande kommando för att köra projektet:
 
-```bash
+```sh
 dotnet run -p PersonsokImplementation
 ```
 
 eller följande kommando för att specifikt köra testerna
 
-```bash
+```sh
 dotnet test
 ```
 
 ### Kundtest
 
-Vi rekommenderar att det klientcertifikat som är tänkt att användas i produktion även används vid tester mot kundtestmiljön,
+Vi rekommenderar att det organisationscertifikat som är tänkt att användas i produktion även används vid tester mot kundtestmiljön,
 detta för att i ett tidigt skede verifiera att certifikatet är korrekt.
 
-### Klientcertifikat
+### Organisationscertifikat
 
-För att använda eget klientcertifikat, byt ut sökväg och lösenord till certifikat i anropet
+För att använda eget organisationscertifikat, byt ut sökväg och lösenord till certifikat i anropet
 '_client.ClientCredentials.ClientCertificate.Certificate = ..._' i funktionen _CreatePersonsokServiceClient_.
 
 ### Rootcertifikat
@@ -51,7 +50,6 @@ Vi rekommenderar att verifiering av rootcertifikatet görs även om en annan lö
 
 ### Produktion
 
-Om koden används för att integrera mot produktionsmiljön krävs ett giltigt klientcertifikat, det inkluderade
+Om koden används för att integrera mot produktionsmiljön krävs ett giltigt organisationscertifikat, det inkluderade
 testcertifikatet fungerar endast i kundtestmiljön. Även indentifieringsinformation behöver vara giltig,
 se _KundNrLeveransMottagare_, _KundNrSlutkund_ och _UppdragsId_. För mer information kontakta SPAR:s kundtjänst.
-

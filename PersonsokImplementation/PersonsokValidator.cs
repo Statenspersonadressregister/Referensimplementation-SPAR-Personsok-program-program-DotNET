@@ -1,6 +1,11 @@
 using System;
 using System.Xml;
 using System.Xml.Schema;
+using System.Reflection;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PersonsokImplementation
 {
@@ -22,17 +27,6 @@ namespace PersonsokImplementation
                 throw new ArgumentException("PersonId måste vara 12 siffror");
             if(!long.TryParse(personId, out long result))
                 throw new ArgumentException("PersonId får endast bestå utav siffror");
-            
-            int year = int.Parse(personId.Substring(0, 4));
-            int month = int.Parse(personId.Substring(4, 2));
-            int day = int.Parse(personId.Substring(6, 2));
-
-            if(year < 1800 || year > 3000)
-                throw new ArgumentOutOfRangeException("PersonId måste bestå utav ett korrekt årtal");
-            if(month < 1 || month > 12)
-                throw new ArgumentOutOfRangeException("PersonId måste bestå utav ett korrekt månadstal");
-            if(day < 1 || day > 31 )
-                throw new ArgumentOutOfRangeException("PersonId måste bestå utav ett korrekt dagstal");
 
             return IsPersonIdChecksumValid(personId.Substring(2));
         }
@@ -71,13 +65,24 @@ namespace PersonsokImplementation
             {
                 XmlReaderSettings settings = new XmlReaderSettings();
                 settings.ValidationType = ValidationType.Schema;
-                settings.Schemas.Add("http://statenspersonadressregister.se/schema/komponent/sok/personsokningsfraga-1.0", "http://xmls.statenspersonadressregister.se/se/spar/deladeKomponenter/sok/PersonsokningFraga-1.0.xsd");
-                settings.Schemas.Add("http://statenspersonadressregister.se/schema/komponent/sok/identifieringsinformation-1.0", "http://xmls.statenspersonadressregister.se/se/spar/deladeKomponenter/sok/IdentifieringsInformation-1.0.xsd");
-                settings.Schemas.Add("http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.0", "http://xmls.statenspersonadressregister.se/se/spar/deladeKomponenter/sok/PersonsokningSokparametrar-1.0.xsd");
-                settings.Schemas.Add("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", "http://xmls.statenspersonadressregister.se/se/spar/deladeKomponenter/sok/Sokargument-1.1.xsd");
-                settings.Schemas.Add("http://statenspersonadressregister.se/schema/komponent/datum-1.0", "http://xmls.statenspersonadressregister.se/se/spar/deladeKomponenter/generellt/Datum-1.0.xsd");
-                settings.Schemas.Add("http://statenspersonadressregister.se/schema/komponent/person/person-1.1", "http://xmls.statenspersonadressregister.se/se/spar/deladeKomponenter/person/Person-1.1.xsd");
-
+                
+                List<String> xsdFiles = new List<String>
+                {
+                    "DatumTid-1.1.xsd",
+                    "DeladeMetaElement-1.0.xsd",
+                    "IdentifieringsinformationWs-1.1.xsd",
+                    "Person-1.2.xsd",
+                    "PersonsokningFraga.xsd",
+                    "PersonsokningSokparametrar-1.1.xsd",
+                    "Sokargument-1.2.xsd",
+                    "Typ-1.0.xsd",
+                };
+                
+                foreach (var xsdName in xsdFiles)
+                {                    
+                    settings.Schemas.Add(loadSchemaFromAssembly(xsdName));
+                }
+                               
                 XmlReader reader = XmlReader.Create(message, settings).ReadSubtree();
                 XmlDocument document = new XmlDocument();
                 document.Load(reader);
@@ -99,9 +104,29 @@ namespace PersonsokImplementation
             {
                 Logger.LogError("Oförväntad fel vid valideringen av request: " + ex.Message);
                 return false;
-            }
+            }            
 
             return true;
+        }
+
+
+        /// <summary>
+        /// Tar en xsd-fil från Assemly och skapar en instans av XmlSchema med denna
+        /// </summary>
+        private static XmlSchema loadSchemaFromAssembly(string Filename) 
+        {
+            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+               
+            using (var reader = embeddedProvider.GetFileInfo(Filename).CreateReadStream())        
+            {        
+                try 
+                {            
+                    return XmlSchema.Read(reader, null);                    
+                }
+                catch (XmlSchemaException ex) {
+                    return null;  
+                }
+            }
         }
 
         /// <summary>

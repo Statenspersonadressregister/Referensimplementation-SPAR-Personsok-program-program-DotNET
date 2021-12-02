@@ -2,7 +2,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace PersonsokImplementation 
+namespace PersonsokImplementation
 {
     /// <summary>
     /// Implementerar metoder som kan användas för att utöka körbeteende för en slutpunkt 
@@ -30,6 +30,6 @@ namespace PersonsokImplementation
         {
         }
 
-        
+
     }
 }

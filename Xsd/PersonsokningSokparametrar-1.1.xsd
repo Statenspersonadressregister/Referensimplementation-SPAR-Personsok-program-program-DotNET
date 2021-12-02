@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1"
+           targetNamespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:argument="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2"
+           xmlns:person="http://statenspersonadressregister.se/schema/komponent/person/person-1.2"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2" schemaLocation="Sokargument-1.2.xsd"/>
+    <xs:import namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.2" schemaLocation="../person/Person-1.2.xsd"/>
+    <xs:annotation>
+        <xs:appinfo>
+            <xs:documentation>
+                Skapad 2021-10-08
+            </xs:documentation>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:element name="PersonsokningFraga" type="PersonsokningFragaTYPE"/>
+    <xs:complexType name="PersonsokningFragaTYPE">
+        <xs:choice>
+            <xs:element ref="person:IdNummer"/>
+            <xs:sequence>
+                <xs:element ref="argument:FonetiskSokning" minOccurs="0"/>
+                <xs:choice>
+                    <xs:element ref="argument:NamnSokArgument" minOccurs="0"/>
+                    <xs:sequence>
+                        <xs:element ref="argument:FornamnSokArgument" minOccurs="0"/>
+                        <xs:element ref="argument:MellanEfternamnSokArgument" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:choice>
+                <xs:element ref="argument:UtdelningsadressSokArgument" minOccurs="0"/>
+                <xs:element ref="argument:PostortSokArgument" minOccurs="0"/>
+                <xs:choice>
+                    <xs:element ref="argument:PostNr" minOccurs="0"/>
+                    <xs:sequence>
+                        <xs:element ref="argument:PostNrFrom"/>
+                        <xs:element ref="argument:PostNrTom"/>
+                    </xs:sequence>
+                </xs:choice>
+                <xs:choice>
+                    <xs:element ref="argument:Fodelsedatum" minOccurs="0"/>
+                    <xs:sequence>
+                        <xs:element ref="argument:FodelsedatumFrom"/>
+                        <xs:element ref="argument:FodelsedatumTom"/>
+                    </xs:sequence>
+                </xs:choice>
+                <xs:element ref="argument:Kon" minOccurs="0"/>
+                <xs:element ref="argument:LanKod" minOccurs="0"/>
+                <xs:element ref="argument:KommunKod" minOccurs="0"/>
+                <xs:choice>
+                    <xs:element ref="argument:DistriktKod" minOccurs="0"/>
+                    <xs:sequence>
+                        <xs:element ref="argument:DistriktKodFrom"/>
+                        <xs:element ref="argument:DistriktKodTom"/>
+                    </xs:sequence>
+                </xs:choice>
+            </xs:sequence>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>

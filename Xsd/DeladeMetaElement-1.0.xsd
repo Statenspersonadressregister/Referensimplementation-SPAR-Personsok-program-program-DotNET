@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://statenspersonadressregister.se/schema/komponent/metadata/delademetaelement-1.0"
+           targetNamespace="http://statenspersonadressregister.se/schema/komponent/metadata/delademetaelement-1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+    <xs:annotation>
+        <xs:appinfo>
+            <xs:documentation>
+                Skapad 2021-10-08
+            </xs:documentation>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:simpleType name="KundNrTYPE">
+        <xs:annotation>
+            <xs:documentation>Kundnummer som tilldelats av SPAR</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="500001"/>
+            <xs:maxInclusive value="599999"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="UppdragIdTYPE">
+        <xs:restriction base="xs:long">
+            <xs:minInclusive value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

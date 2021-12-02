@@ -26,16 +26,16 @@ namespace PersonsokImplementation
         {
             MessageBuffer buffer = request.CreateBufferedCopy(int.MaxValue);
             Message copy = buffer.CreateMessage();
-            
+
             Logger.LogInformation("Validating request");
             bool isRequestValid = PersonsokValidator.ValidateXml(copy.GetReaderAtBodyContents());
 
-            if(!isRequestValid)
+            if (!isRequestValid)
             {
                 Logger.LogError("Request is not valid, aborting!");
                 channel.Abort();
             }
-            else 
+            else
             {
                 Logger.LogInformation("Sending request");
                 request = buffer.CreateMessage();
