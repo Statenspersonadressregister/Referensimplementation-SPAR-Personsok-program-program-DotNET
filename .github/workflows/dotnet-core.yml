@@ -1,11 +1,13 @@
 name: .NET
 
 on:
+  schedule:
+    - cron: '0 12 * * *'
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
