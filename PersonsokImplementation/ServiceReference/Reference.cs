@@ -19,34 +19,68 @@ using System.Xml.Serialization;
 //------------------------------------------------------------------------------
 namespace ServiceReference
 {
-    [ServiceContractAttribute(Namespace="http://statenspersonadressregister.se/personsok/2019.1", ConfigurationName="PersonsokService")]
+
+    [ServiceContractAttribute(Namespace="http://statenspersonadressregister.se/personsok/2021.1", ConfigurationName="PersonsokService")]
     public interface PersonsokService
     {
-        [OperationContractAttribute(Action="http://skatteverket.se/spar/personsok/2019.1/PersonsokService/Personsok", ReplyAction="*")]
+        [OperationContractAttribute(Action="http://skatteverket.se/spar/personsok/2021.1/PersonsokService/Personsok", ReplyAction="*")]
         [XmlSerializerFormatAttribute(SupportFaults=true)]
         PersonSokResponse PersonSok(PersonSokRequest request);
-        
-        [OperationContractAttribute(Action="http://skatteverket.se/spar/personsok/2019.1/PersonsokService/Personsok", ReplyAction="*")]
+
+        [OperationContractAttribute(Action="http://skatteverket.se/spar/personsok/2021.1/PersonsokService/Personsok", ReplyAction="*")]
         Task<PersonSokResponse> PersonSokAsync(PersonSokRequest request);
     }
 
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/identifieringsinformation-1.0")]
-    public partial class IdentifieringsInformationTYPE
+    [XmlTypeAttribute(AnonymousType=true, Namespace="http://statenspersonadressregister.se/schema/personsok/2021.1/personsokningfraga")]
+    public partial class SPARPersonsokningFraga
     {
+        
+        private IdentifieringsinformationTYPE identifieringsinformationField;
+        
+        private PersonsokningFragaTYPE personsokningFragaField;
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/metadata/identifieringsinformationWs-1.1", Order=0)]
+        public IdentifieringsinformationTYPE Identifieringsinformation
+        {
+            get
+            {
+                return this.identifieringsinformationField;
+            }
+            set
+            {
+                this.identifieringsinformationField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1", Order=1)]
+        public PersonsokningFragaTYPE PersonsokningFraga
+        {
+            get
+            {
+                return this.personsokningFragaField;
+            }
+            set
+            {
+                this.personsokningFragaField = value;
+            }
+        }
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/metadata/identifieringsinformationWs-1.1")]
+    public partial class IdentifieringsinformationTYPE
+    {
+        
         private int kundNrLeveransMottagareField;
         
         private int kundNrSlutkundField;
         
-        private string orgNrSlutkundField;
-        
-        private long uppdragsIdField;
+        private long uppdragIdField;
         
         private string slutAnvandarIdField;
         
         private SlutAnvandarUtokadBehorighetTYPE[] slutAnvandarUtokadBehorighetField;
-        
-        private DateTime tidsstampelField;
         
         [XmlElementAttribute(Order=0)]
         public int KundNrLeveransMottagare
@@ -75,32 +109,19 @@ namespace ServiceReference
         }
         
         [XmlElementAttribute(Order=2)]
-        public string OrgNrSlutkund
+        public long UppdragId
         {
             get
             {
-                return this.orgNrSlutkundField;
+                return this.uppdragIdField;
             }
             set
             {
-                this.orgNrSlutkundField = value;
+                this.uppdragIdField = value;
             }
         }
         
         [XmlElementAttribute(Order=3)]
-        public long UppdragsId
-        {
-            get
-            {
-                return this.uppdragsIdField;
-            }
-            set
-            {
-                this.uppdragsIdField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Order=4)]
         public string SlutAnvandarId
         {
             get
@@ -113,7 +134,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute("SlutAnvandarUtokadBehorighet", Order=5)]
+        [XmlElementAttribute("SlutAnvandarUtokadBehorighet", Order=4)]
         public SlutAnvandarUtokadBehorighetTYPE[] SlutAnvandarUtokadBehorighet
         {
             get
@@ -125,24 +146,12 @@ namespace ServiceReference
                 this.slutAnvandarUtokadBehorighetField = value;
             }
         }
-        
-        [XmlElementAttribute(Order=6)]
-        public DateTime Tidsstampel
-        {
-            get
-            {
-                return this.tidsstampelField;
-            }
-            set
-            {
-                this.tidsstampelField = value;
-            }
-        }
     }
-    
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/identifieringsinformation-1.0")]
+
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/metadata/identifieringsinformationWs-1.1")]
     public enum SlutAnvandarUtokadBehorighetTYPE
     {
+        
         Relationer,
         
         Medborgarskap,
@@ -151,14 +160,15 @@ namespace ServiceReference
         
         Sekretess,
     }
-    
+
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsvar-1.0")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/undantag-1.0")]
     public partial class OverstigerMaxAntalSvarsposterTYPE
     {
+        
         private int antalPosterField;
         
-        private int maxAntalSvarsPosterField;
+        private int maxAntalSvarsposterField;
         
         [XmlElementAttribute(Order=0)]
         public int AntalPoster
@@ -174,23 +184,24 @@ namespace ServiceReference
         }
         
         [XmlElementAttribute(Order=1)]
-        public int MaxAntalSvarsPoster
+        public int MaxAntalSvarsposter
         {
             get
             {
-                return this.maxAntalSvarsPosterField;
+                return this.maxAntalSvarsposterField;
             }
             set
             {
-                this.maxAntalSvarsPosterField = value;
+                this.maxAntalSvarsposterField = value;
             }
         }
     }
-    
+
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsvar-1.0")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/undantag-1.0")]
     public partial class UndantagTYPE
     {
+        
         private string kodField;
         
         private string beskrivningField;
@@ -221,11 +232,12 @@ namespace ServiceReference
             }
         }
     }
-    
+
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/fastighetstaxering-1.1")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/fastighetstaxering-1.2")]
     public partial class FastighetDelTYPE
     {
+        
         private string taxeringsidentitetField;
         
         private string fastighetBeteckningField;
@@ -286,11 +298,12 @@ namespace ServiceReference
             }
         }
     }
-    
+
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/fastighetstaxering-1.1")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/fastighetstaxering-1.2")]
     public partial class FastighetTYPE
     {
+        
         private string taxeringsenhetsnummerField;
         
         private string lanKodField;
@@ -396,18 +409,19 @@ namespace ServiceReference
             }
         }
     }
-    
+
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/relation-1.1")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/relation-1.2")]
     public partial class RelationTYPE
     {
+        
         private DateTime datumFromField;
         
         private DateTime datumTillField;
         
         private RelationstypTYPE relationstypField;
         
-        private PersonIdTYPE1 personIdField;
+        private string idNummerField;
         
         private string fornamnField;
         
@@ -421,9 +435,11 @@ namespace ServiceReference
         
         private string avregistreringsorsakKodField;
         
+        private string avregistreringsdatumField;
+        
         private string avlidendatumField;
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=0)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=0)]
         public DateTime DatumFrom
         {
             get
@@ -436,7 +452,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=1)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=1)]
         public DateTime DatumTill
         {
             get
@@ -462,20 +478,20 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.1", Order=3)]
-        public PersonIdTYPE1 PersonId
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.2", Order=3)]
+        public string IdNummer
         {
             get
             {
-                return this.personIdField;
+                return this.idNummerField;
             }
             set
             {
-                this.personIdField = value;
+                this.idNummerField = value;
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1", Order=4)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=4)]
         public string Fornamn
         {
             get
@@ -488,7 +504,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1", Order=5)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=5)]
         public string Mellannamn
         {
             get
@@ -501,7 +517,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1", Order=6)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=6)]
         public string Efternamn
         {
             get
@@ -514,7 +530,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1", DataType="date", Order=7)]
+        [XmlElementAttribute(DataType="date", Order=7)]
         public DateTime Fodelsetid
         {
             get
@@ -540,7 +556,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1", Order=8)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/avregistrering-1.0", Order=8)]
         public string AvregistreringsorsakKod
         {
             get
@@ -553,7 +569,20 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1", Order=9)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/avregistrering-1.0", Order=9)]
+        public string Avregistreringsdatum
+        {
+            get
+            {
+                return this.avregistreringsdatumField;
+            }
+            set
+            {
+                this.avregistreringsdatumField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/avregistrering-1.0", Order=10)]
         public string Avlidendatum
         {
             get
@@ -566,43 +595,47 @@ namespace ServiceReference
             }
         }
     }
-    
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/relation-1.1")]
+
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/relation-1.2")]
     public enum RelationstypTYPE
     {
-        V,
-        M,
+        
+        VÅRDNADSHAVARE,
+        
+        [XmlEnumAttribute("MAKE/MAKA/REGISTRERAD PARTNER")]
+        MAKEMAKAREGISTRERADPARTNER,
     }
 
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(TypeName="PersonIdTYPE", Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.1")]
-    public partial class PersonIdTYPE1
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/kontaktadress-1.0")]
+    public partial class KontaktadressTYPE
     {
-        private string fysiskPersonIdField;
         
-        [XmlElementAttribute(Order=0)]
-        public string FysiskPersonId
+        private object itemField;
+        
+        [XmlElementAttribute("InternationellAdress", typeof(InternationellAdressTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1", Order=0)]
+        [XmlElementAttribute("SvenskAdress", typeof(SvenskAdressTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1", Order=0)]
+        public object Item
         {
             get
             {
-                return this.fysiskPersonIdField;
+                return this.itemField;
             }
             set
             {
-                this.fysiskPersonIdField = value;
+                this.itemField = value;
             }
         }
     }
 
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/utlandsadress-1.0")]
-    public partial class UtlandsadressTYPE
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1")]
+    public partial class InternationellAdressTYPE
     {
+        
         private DateTime datumFromField;
         
         private DateTime datumTillField;
-        
-        private string careOfField;
         
         private string utdelningsadress1Field;
         
@@ -612,7 +645,7 @@ namespace ServiceReference
         
         private string landField;
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=0)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=0)]
         public DateTime DatumFrom
         {
             get
@@ -625,7 +658,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=1)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=1)]
         public DateTime DatumTill
         {
             get
@@ -638,20 +671,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=2)]
-        public string CareOf
-        {
-            get
-            {
-                return this.careOfField;
-            }
-            set
-            {
-                this.careOfField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=3)]
+        [XmlElementAttribute(Order=2)]
         public string Utdelningsadress1
         {
             get
@@ -664,7 +684,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=4)]
+        [XmlElementAttribute(Order=3)]
         public string Utdelningsadress2
         {
             get
@@ -677,7 +697,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=5)]
+        [XmlElementAttribute(Order=4)]
         public string Utdelningsadress3
         {
             get
@@ -690,7 +710,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=6)]
+        [XmlElementAttribute(Order=5)]
         public string Land
         {
             get
@@ -705,9 +725,10 @@ namespace ServiceReference
     }
 
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/sarskildpostadress-1.0")]
-    public partial class SarskildPostadressTYPE
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1")]
+    public partial class SvenskAdressTYPE
     {
+        
         private DateTime datumFromField;
         
         private DateTime datumTillField;
@@ -722,7 +743,7 @@ namespace ServiceReference
         
         private string postortField;
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=0)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=0)]
         public DateTime DatumFrom
         {
             get
@@ -735,7 +756,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=1)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=1)]
         public DateTime DatumTill
         {
             get
@@ -748,7 +769,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=2)]
+        [XmlElementAttribute(Order=2)]
         public string CareOf
         {
             get
@@ -761,7 +782,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=3)]
+        [XmlElementAttribute(Order=3)]
         public string Utdelningsadress1
         {
             get
@@ -774,7 +795,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=4)]
+        [XmlElementAttribute(Order=4)]
         public string Utdelningsadress2
         {
             get
@@ -787,7 +808,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=5)]
+        [XmlElementAttribute(Order=5)]
         public string PostNr
         {
             get
@@ -800,7 +821,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=6)]
+        [XmlElementAttribute(Order=6)]
         public string Postort
         {
             get
@@ -813,30 +834,87 @@ namespace ServiceReference
             }
         }
     }
-    
+
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/folkbokforingsadress-1.0")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/utlandsadress-1.1")]
+    public partial class UtlandsadressTYPE
+    {
+        
+        private InternationellAdressTYPE internationellAdressField;
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1", Order=0)]
+        public InternationellAdressTYPE InternationellAdress
+        {
+            get
+            {
+                return this.internationellAdressField;
+            }
+            set
+            {
+                this.internationellAdressField = value;
+            }
+        }
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/sarskildpostadress-1.1")]
+    public partial class SarskildPostadressTYPE
+    {
+        
+        private object itemField;
+        
+        [XmlElementAttribute("InternationellAdress", typeof(InternationellAdressTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1", Order=0)]
+        [XmlElementAttribute("SvenskAdress", typeof(SvenskAdressTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1", Order=0)]
+        public object Item
+        {
+            get
+            {
+                return this.itemField;
+            }
+            set
+            {
+                this.itemField = value;
+            }
+        }
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/folkbokforingsadress-1.1")]
     public partial class FolkbokforingsadressTYPE
     {
+        
+        private SvenskAdressTYPE svenskAdressField;
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.1", Order=0)]
+        public SvenskAdressTYPE SvenskAdress
+        {
+            get
+            {
+                return this.svenskAdressField;
+            }
+            set
+            {
+                this.svenskAdressField = value;
+            }
+        }
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/folkbokforing-1.0")]
+    public partial class FolkbokforingTYPE
+    {
+        
         private DateTime datumFromField;
         
         private DateTime datumTillField;
-        
-        private string careOfField;
-        
-        private string utdelningsadress1Field;
-        
-        private string utdelningsadress2Field;
-        
-        private string postNrField;
-        
-        private string postortField;
         
         private string folkbokfordLanKodField;
         
         private string folkbokfordKommunKodField;
         
-        private string folkbokfordForsamlingKodField;
+        private HemvistTYPE hemvistField;
+        
+        private bool hemvistFieldSpecified;
         
         private DateTime folkbokforingsdatumField;
         
@@ -844,7 +922,7 @@ namespace ServiceReference
         
         private string distriktKodField;
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=0)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=0)]
         public DateTime DatumFrom
         {
             get
@@ -857,7 +935,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=1)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=1)]
         public DateTime DatumTill
         {
             get
@@ -870,72 +948,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=2)]
-        public string CareOf
-        {
-            get
-            {
-                return this.careOfField;
-            }
-            set
-            {
-                this.careOfField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=3)]
-        public string Utdelningsadress1
-        {
-            get
-            {
-                return this.utdelningsadress1Field;
-            }
-            set
-            {
-                this.utdelningsadress1Field = value;
-            }
-        }
-        
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=4)]
-        public string Utdelningsadress2
-        {
-            get
-            {
-                return this.utdelningsadress2Field;
-            }
-            set
-            {
-                this.utdelningsadress2Field = value;
-            }
-        }
-        
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=5)]
-        public string PostNr
-        {
-            get
-            {
-                return this.postNrField;
-            }
-            set
-            {
-                this.postNrField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/deladeadresselement-1.0", Order=6)]
-        public string Postort
-        {
-            get
-            {
-                return this.postortField;
-            }
-            set
-            {
-                this.postortField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Order=7)]
+        [XmlElementAttribute(Order=2)]
         public string FolkbokfordLanKod
         {
             get
@@ -948,7 +961,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=8)]
+        [XmlElementAttribute(Order=3)]
         public string FolkbokfordKommunKod
         {
             get
@@ -961,20 +974,33 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=9)]
-        public string FolkbokfordForsamlingKod
+        [XmlElementAttribute(Order=4)]
+        public HemvistTYPE Hemvist
         {
             get
             {
-                return this.folkbokfordForsamlingKodField;
+                return this.hemvistField;
             }
             set
             {
-                this.folkbokfordForsamlingKodField = value;
+                this.hemvistField = value;
             }
         }
         
-        [XmlElementAttribute(DataType="date", Order=10)]
+        [XmlIgnoreAttribute()]
+        public bool HemvistSpecified
+        {
+            get
+            {
+                return this.hemvistFieldSpecified;
+            }
+            set
+            {
+                this.hemvistFieldSpecified = value;
+            }
+        }
+        
+        [XmlElementAttribute(DataType="date", Order=5)]
         public DateTime Folkbokforingsdatum
         {
             get
@@ -1000,7 +1026,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=11)]
+        [XmlElementAttribute(Order=6)]
         public string DistriktKod
         {
             get
@@ -1013,60 +1039,137 @@ namespace ServiceReference
             }
         }
     }
-    
+
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/folkbokforing-1.0")]
+    public enum HemvistTYPE
+    {
+        
+        [XmlEnumAttribute("Skriven på adressen")]
+        Skrivenpåadressen,
+        
+        [XmlEnumAttribute("På kommunen skriven")]
+        Påkommunenskriven,
+        
+        [XmlEnumAttribute("Utan känt hemvist")]
+        Utankänthemvist,
+    }
+
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/hanvisning-1.0")]
+    public partial class HanvisningTYPE
+    {
+        
+        private string idNummerField;
+        
+        private HanvisningTypTYPE typField;
+        
+        private bool typFieldSpecified;
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.2", Order=0)]
+        public string IdNummer
+        {
+            get
+            {
+                return this.idNummerField;
+            }
+            set
+            {
+                this.idNummerField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Order=1)]
+        public HanvisningTypTYPE Typ
+        {
+            get
+            {
+                return this.typField;
+            }
+            set
+            {
+                this.typField = value;
+            }
+        }
+        
+        [XmlIgnoreAttribute()]
+        public bool TypSpecified
+        {
+            get
+            {
+                return this.typFieldSpecified;
+            }
+            set
+            {
+                this.typFieldSpecified = value;
+            }
+        }
+    }
+
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/hanvisning-1.0")]
+    public enum HanvisningTypTYPE
+    {
+        
+        Till,
+        
+        Fran,
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.2")]
     public partial class PersondetaljerTYPE
     {
+        
         private DateTime datumFromField;
         
         private DateTime datumTillField;
         
-        private string aviseringsnamnField;
-        
-        private string fornamnField;
-        
-        private int tilltalsnamnField;
-        
-        private bool tilltalsnamnFieldSpecified;
-        
-        private string mellannamnField;
-        
-        private string efternamnField;
-        
         private SekretessmarkeringMedAttributTYPE sekretessmarkeringField;
         
-        private SkyddadFolkbokforingTYPE skyddadFolkbokforingField;
+        private JaNejTYPE skyddadFolkbokforingField;
         
         private bool skyddadFolkbokforingFieldSpecified;
         
         private string avregistreringsorsakKodField;
         
+        private string avregistreringsdatumField;
+        
         private string avlidendatumField;
         
         private string antraffadDodDatumField;
         
-        private string hanvisningsPersonNrByttFranField;
+        private DateTime fodelsedatumField;
         
-        private string hanvisningsPersonNrByttTillField;
-        
-        private DateTime fodelsetidField;
-        
-        private bool fodelsetidFieldSpecified;
+        private bool fodelsedatumFieldSpecified;
         
         private string fodelselanKodField;
         
         private string fodelseforsamlingField;
         
-        private KonTYPE1 konField;
+        private KonTYPE konField;
         
         private bool konFieldSpecified;
         
-        private SvenskMedborgareTYPE svenskMedborgareField;
+        private JaNejTYPE svenskMedborgareField;
         
         private bool svenskMedborgareFieldSpecified;
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=0)]
+        private HanvisningTYPE[] hanvisningField;
+        
+        private string snStatusField;
+        
+        private string snTilldelningsdatumField;
+        
+        private string snPreliminartVilandeforklaringsdatumField;
+        
+        private string snFornyelsedatumField;
+        
+        private string snVilandeorsakField;
+        
+        private string snVilandeforklaringsdatumField;
+        
+        private string snAvlidendatumField;
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=0)]
         public DateTime DatumFrom
         {
             get
@@ -1079,7 +1182,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/datum-1.0", DataType="date", Order=1)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=1)]
         public DateTime DatumTill
         {
             get
@@ -1092,85 +1195,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=2)]
-        public string Aviseringsnamn
-        {
-            get
-            {
-                return this.aviseringsnamnField;
-            }
-            set
-            {
-                this.aviseringsnamnField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Order=3)]
-        public string Fornamn
-        {
-            get
-            {
-                return this.fornamnField;
-            }
-            set
-            {
-                this.fornamnField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Order=4)]
-        public int Tilltalsnamn
-        {
-            get
-            {
-                return this.tilltalsnamnField;
-            }
-            set
-            {
-                this.tilltalsnamnField = value;
-            }
-        }
-        
-        [XmlIgnoreAttribute()]
-        public bool TilltalsnamnSpecified
-        {
-            get
-            {
-                return this.tilltalsnamnFieldSpecified;
-            }
-            set
-            {
-                this.tilltalsnamnFieldSpecified = value;
-            }
-        }
-        
-        [XmlElementAttribute(Order=5)]
-        public string Mellannamn
-        {
-            get
-            {
-                return this.mellannamnField;
-            }
-            set
-            {
-                this.mellannamnField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Order=6)]
-        public string Efternamn
-        {
-            get
-            {
-                return this.efternamnField;
-            }
-            set
-            {
-                this.efternamnField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0", Order=7)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1", Order=2)]
         public SekretessmarkeringMedAttributTYPE Sekretessmarkering
         {
             get
@@ -1183,8 +1208,8 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0", Order=8)]
-        public SkyddadFolkbokforingTYPE SkyddadFolkbokforing
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1", Order=3)]
+        public JaNejTYPE SkyddadFolkbokforing
         {
             get
             {
@@ -1209,7 +1234,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=9)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/avregistrering-1.0", Order=4)]
         public string AvregistreringsorsakKod
         {
             get
@@ -1222,7 +1247,20 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=10)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/avregistrering-1.0", Order=5)]
+        public string Avregistreringsdatum
+        {
+            get
+            {
+                return this.avregistreringsdatumField;
+            }
+            set
+            {
+                this.avregistreringsdatumField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/avregistrering-1.0", Order=6)]
         public string Avlidendatum
         {
             get
@@ -1235,7 +1273,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=11)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/avregistrering-1.0", Order=7)]
         public string AntraffadDodDatum
         {
             get
@@ -1248,59 +1286,33 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=12)]
-        public string HanvisningsPersonNrByttFran
+        [XmlElementAttribute(DataType="date", Order=8)]
+        public DateTime Fodelsedatum
         {
             get
             {
-                return this.hanvisningsPersonNrByttFranField;
+                return this.fodelsedatumField;
             }
             set
             {
-                this.hanvisningsPersonNrByttFranField = value;
-            }
-        }
-        
-        [XmlElementAttribute(Order=13)]
-        public string HanvisningsPersonNrByttTill
-        {
-            get
-            {
-                return this.hanvisningsPersonNrByttTillField;
-            }
-            set
-            {
-                this.hanvisningsPersonNrByttTillField = value;
-            }
-        }
-        
-        [XmlElementAttribute(DataType="date", Order=14)]
-        public DateTime Fodelsetid
-        {
-            get
-            {
-                return this.fodelsetidField;
-            }
-            set
-            {
-                this.fodelsetidField = value;
+                this.fodelsedatumField = value;
             }
         }
         
         [XmlIgnoreAttribute()]
-        public bool FodelsetidSpecified
+        public bool FodelsedatumSpecified
         {
             get
             {
-                return this.fodelsetidFieldSpecified;
+                return this.fodelsedatumFieldSpecified;
             }
             set
             {
-                this.fodelsetidFieldSpecified = value;
+                this.fodelsedatumFieldSpecified = value;
             }
         }
         
-        [XmlElementAttribute(Order=15)]
+        [XmlElementAttribute(Order=9)]
         public string FodelselanKod
         {
             get
@@ -1313,7 +1325,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=16)]
+        [XmlElementAttribute(Order=10)]
         public string Fodelseforsamling
         {
             get
@@ -1326,8 +1338,8 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=17)]
-        public KonTYPE1 Kon
+        [XmlElementAttribute(Order=11)]
+        public KonTYPE Kon
         {
             get
             {
@@ -1352,8 +1364,8 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Order=18)]
-        public SvenskMedborgareTYPE SvenskMedborgare
+        [XmlElementAttribute(Order=12)]
+        public JaNejTYPE SvenskMedborgare
         {
             get
             {
@@ -1377,17 +1389,122 @@ namespace ServiceReference
                 this.svenskMedborgareFieldSpecified = value;
             }
         }
+        
+        [XmlElementAttribute("Hanvisning", Namespace="http://statenspersonadressregister.se/schema/komponent/person/hanvisning-1.0", Order=13)]
+        public HanvisningTYPE[] Hanvisning
+        {
+            get
+            {
+                return this.hanvisningField;
+            }
+            set
+            {
+                this.hanvisningField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/samordningsnummer-1.0", Order=14)]
+        public string SnStatus
+        {
+            get
+            {
+                return this.snStatusField;
+            }
+            set
+            {
+                this.snStatusField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/samordningsnummer-1.0", Order=15)]
+        public string SnTilldelningsdatum
+        {
+            get
+            {
+                return this.snTilldelningsdatumField;
+            }
+            set
+            {
+                this.snTilldelningsdatumField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/samordningsnummer-1.0", Order=16)]
+        public string SnPreliminartVilandeforklaringsdatum
+        {
+            get
+            {
+                return this.snPreliminartVilandeforklaringsdatumField;
+            }
+            set
+            {
+                this.snPreliminartVilandeforklaringsdatumField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/samordningsnummer-1.0", Order=17)]
+        public string SnFornyelsedatum
+        {
+            get
+            {
+                return this.snFornyelsedatumField;
+            }
+            set
+            {
+                this.snFornyelsedatumField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/samordningsnummer-1.0", Order=18)]
+        public string SnVilandeorsak
+        {
+            get
+            {
+                return this.snVilandeorsakField;
+            }
+            set
+            {
+                this.snVilandeorsakField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/samordningsnummer-1.0", Order=19)]
+        public string SnVilandeforklaringsdatum
+        {
+            get
+            {
+                return this.snVilandeforklaringsdatumField;
+            }
+            set
+            {
+                this.snVilandeforklaringsdatumField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/samordningsnummer-1.0", Order=20)]
+        public string SnAvlidendatum
+        {
+            get
+            {
+                return this.snAvlidendatumField;
+            }
+            set
+            {
+                this.snAvlidendatumField = value;
+            }
+        }
     }
 
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1")]
     public partial class SekretessmarkeringMedAttributTYPE
     {
+        
         private SekretessSattAvSPARTYPE sattAvSPARField;
         
         private bool sattAvSPARFieldSpecified;
         
-        private SekretessmarkeringTYPE valueField;
+        private JaNejTYPE valueField;
         
         [XmlAttributeAttribute()]
         public SekretessSattAvSPARTYPE sattAvSPAR
@@ -1416,7 +1533,7 @@ namespace ServiceReference
         }
         
         [XmlTextAttribute()]
-        public SekretessmarkeringTYPE Value
+        public JaNejTYPE Value
         {
             get
             {
@@ -1428,58 +1545,212 @@ namespace ServiceReference
             }
         }
     }
-    
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0")]
+
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1")]
     public enum SekretessSattAvSPARTYPE
     {
-        J,
+        
+        JA,
     }
 
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0")]
-    public enum SekretessmarkeringTYPE
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/typ-1.0")]
+    public enum JaNejTYPE
     {
-        J,
-        N,
+        
+        JA,
+        
+        NEJ,
     }
 
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0")]
-    public enum SkyddadFolkbokforingTYPE
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/typ-1.0")]
+    public enum KonTYPE
     {
-        J,
-        N,
-    }
-    
-    [XmlTypeAttribute(TypeName="KonTYPE", Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1")]
-    public enum KonTYPE1
-    {
-        M,
-        K,
-    }
-
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1")]
-    public enum SvenskMedborgareTYPE
-    {
-        J,
-        N,
+        
+        MAN,
+        
+        KVINNA,
     }
 
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/aviseringspost-1.1")]
-    public partial class AviseringsPostTYPE
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/namn-1.0")]
+    public partial class NamnTYPE
     {
-        private PersonIdTYPE1 personIdField;
+        
+        private DateTime datumFromField;
+        
+        private DateTime datumTillField;
+        
+        private string aviseringsnamnField;
+        
+        private string fornamnField;
+        
+        private int tilltalsnamnField;
+        
+        private bool tilltalsnamnFieldSpecified;
+        
+        private string mellannamnField;
+        
+        private string efternamnField;
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=0)]
+        public DateTime DatumFrom
+        {
+            get
+            {
+                return this.datumFromField;
+            }
+            set
+            {
+                this.datumFromField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/generellt/datumtid-1.1", DataType="date", Order=1)]
+        public DateTime DatumTill
+        {
+            get
+            {
+                return this.datumTillField;
+            }
+            set
+            {
+                this.datumTillField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=2)]
+        public string Aviseringsnamn
+        {
+            get
+            {
+                return this.aviseringsnamnField;
+            }
+            set
+            {
+                this.aviseringsnamnField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=3)]
+        public string Fornamn
+        {
+            get
+            {
+                return this.fornamnField;
+            }
+            set
+            {
+                this.fornamnField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=4)]
+        public int Tilltalsnamn
+        {
+            get
+            {
+                return this.tilltalsnamnField;
+            }
+            set
+            {
+                this.tilltalsnamnField = value;
+            }
+        }
+        
+        [XmlIgnoreAttribute()]
+        public bool TilltalsnamnSpecified
+        {
+            get
+            {
+                return this.tilltalsnamnFieldSpecified;
+            }
+            set
+            {
+                this.tilltalsnamnFieldSpecified = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=5)]
+        public string Mellannamn
+        {
+            get
+            {
+                return this.mellannamnField;
+            }
+            set
+            {
+                this.mellannamnField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/deladenamnelement-1.0", Order=6)]
+        public string Efternamn
+        {
+            get
+            {
+                return this.efternamnField;
+            }
+            set
+            {
+                this.efternamnField = value;
+            }
+        }
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.2")]
+    public partial class PersonIdTYPE
+    {
+        
+        private string idNummerField;
+        
+        private string typField;
+        
+        [XmlElementAttribute(Order=0)]
+        public string IdNummer
+        {
+            get
+            {
+                return this.idNummerField;
+            }
+            set
+            {
+                this.idNummerField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Order=1)]
+        public string Typ
+        {
+            get
+            {
+                return this.typField;
+            }
+            set
+            {
+                this.typField = value;
+            }
+        }
+    }
+
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/aviseringpost-1.2")]
+    public partial class AviseringPostTYPE
+    {
+        
+        private PersonIdTYPE personIdField;
         
         private SekretessmarkeringMedAttributTYPE sekretessmarkeringField;
         
-        private DateTime sekretessAndringsdatumField;
+        private DateTime sekretessDatumField;
         
-        private bool sekretessAndringsdatumFieldSpecified;
+        private bool sekretessDatumFieldSpecified;
         
-        private SkyddadFolkbokforingTYPE skyddadFolkbokforingField;
+        private JaNejTYPE skyddadFolkbokforingField;
         
-        private DateTime skyddadFolkbokforingAndringsdatumField;
+        private DateTime skyddadFolkbokforingDatumField;
         
-        private bool skyddadFolkbokforingAndringsdatumFieldSpecified;
+        private bool skyddadFolkbokforingDatumFieldSpecified;
         
         private DateTime senasteAndringSPARField;
         
@@ -1489,7 +1760,11 @@ namespace ServiceReference
         
         private string inkomstArField;
         
+        private NamnTYPE[] namnField;
+        
         private PersondetaljerTYPE[] persondetaljerField;
+        
+        private FolkbokforingTYPE[] folkbokforingField;
         
         private FolkbokforingsadressTYPE[] folkbokforingsadressField;
         
@@ -1497,12 +1772,14 @@ namespace ServiceReference
         
         private UtlandsadressTYPE[] utlandsadressField;
         
+        private KontaktadressTYPE[] kontaktadressField;
+        
         private RelationTYPE[] relationField;
         
         private FastighetTYPE[] fastighetField;
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.1", Order=0)]
-        public PersonIdTYPE1 PersonId
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.2", Order=0)]
+        public PersonIdTYPE PersonId
         {
             get
             {
@@ -1514,7 +1791,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0", Order=1)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1", Order=1)]
         public SekretessmarkeringMedAttributTYPE Sekretessmarkering
         {
             get
@@ -1527,34 +1804,34 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0", DataType="date", Order=2)]
-        public DateTime SekretessAndringsdatum
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1", DataType="date", Order=2)]
+        public DateTime SekretessDatum
         {
             get
             {
-                return this.sekretessAndringsdatumField;
+                return this.sekretessDatumField;
             }
             set
             {
-                this.sekretessAndringsdatumField = value;
+                this.sekretessDatumField = value;
             }
         }
         
         [XmlIgnoreAttribute()]
-        public bool SekretessAndringsdatumSpecified
+        public bool SekretessDatumSpecified
         {
             get
             {
-                return this.sekretessAndringsdatumFieldSpecified;
+                return this.sekretessDatumFieldSpecified;
             }
             set
             {
-                this.sekretessAndringsdatumFieldSpecified = value;
+                this.sekretessDatumFieldSpecified = value;
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0", Order=3)]
-        public SkyddadFolkbokforingTYPE SkyddadFolkbokforing
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1", Order=3)]
+        public JaNejTYPE SkyddadFolkbokforing
         {
             get
             {
@@ -1566,33 +1843,33 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.0", DataType="date", Order=4)]
-        public DateTime SkyddadFolkbokforingAndringsdatum
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/skyddadepersonuppgifter-1.1", DataType="date", Order=4)]
+        public DateTime SkyddadFolkbokforingDatum
         {
             get
             {
-                return this.skyddadFolkbokforingAndringsdatumField;
+                return this.skyddadFolkbokforingDatumField;
             }
             set
             {
-                this.skyddadFolkbokforingAndringsdatumField = value;
+                this.skyddadFolkbokforingDatumField = value;
             }
         }
         
         [XmlIgnoreAttribute()]
-        public bool SkyddadFolkbokforingAndringsdatumSpecified
+        public bool SkyddadFolkbokforingDatumSpecified
         {
             get
             {
-                return this.skyddadFolkbokforingAndringsdatumFieldSpecified;
+                return this.skyddadFolkbokforingDatumFieldSpecified;
             }
             set
             {
-                this.skyddadFolkbokforingAndringsdatumFieldSpecified = value;
+                this.skyddadFolkbokforingDatumFieldSpecified = value;
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.1", DataType="date", Order=5)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.2", DataType="date", Order=5)]
         public DateTime SenasteAndringSPAR
         {
             get
@@ -1618,7 +1895,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/inkomsttaxering-1.1", Order=6)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/inkomsttaxering-1.2", Order=6)]
         public string SummeradInkomst
         {
             get
@@ -1631,7 +1908,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/inkomsttaxering-1.1", Order=7)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/inkomsttaxering-1.2", Order=7)]
         public string InkomstAr
         {
             get
@@ -1644,7 +1921,20 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute("Persondetaljer", Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.1", Order=8)]
+        [XmlElementAttribute("Namn", Namespace="http://statenspersonadressregister.se/schema/komponent/person/namn/namn-1.0", Order=8)]
+        public NamnTYPE[] Namn
+        {
+            get
+            {
+                return this.namnField;
+            }
+            set
+            {
+                this.namnField = value;
+            }
+        }
+        
+        [XmlElementAttribute("Persondetaljer", Namespace="http://statenspersonadressregister.se/schema/komponent/person/persondetaljer-1.2", Order=9)]
         public PersondetaljerTYPE[] Persondetaljer
         {
             get
@@ -1657,7 +1947,20 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute("Folkbokforingsadress", Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/folkbokforingsadress-1.0", Order=9)]
+        [XmlElementAttribute("Folkbokforing", Namespace="http://statenspersonadressregister.se/schema/komponent/person/folkbokforing-1.0", Order=10)]
+        public FolkbokforingTYPE[] Folkbokforing
+        {
+            get
+            {
+                return this.folkbokforingField;
+            }
+            set
+            {
+                this.folkbokforingField = value;
+            }
+        }
+        
+        [XmlElementAttribute("Folkbokforingsadress", Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/folkbokforingsadress-1.1", Order=11)]
         public FolkbokforingsadressTYPE[] Folkbokforingsadress
         {
             get
@@ -1670,7 +1973,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute("SarskildPostadress", Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/sarskildpostadress-1.0", Order=10)]
+        [XmlElementAttribute("SarskildPostadress", Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/sarskildpostadress-1.1", Order=12)]
         public SarskildPostadressTYPE[] SarskildPostadress
         {
             get
@@ -1683,7 +1986,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute("Utlandsadress", Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/utlandsadress-1.0", Order=11)]
+        [XmlElementAttribute("Utlandsadress", Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/utlandsadress-1.1", Order=13)]
         public UtlandsadressTYPE[] Utlandsadress
         {
             get
@@ -1696,7 +1999,20 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute("Relation", Namespace="http://statenspersonadressregister.se/schema/komponent/person/relation-1.1", Order=12)]
+        [XmlElementAttribute("Kontaktadress", Namespace="http://statenspersonadressregister.se/schema/komponent/person/adress/kontaktadress-1.0", Order=14)]
+        public KontaktadressTYPE[] Kontaktadress
+        {
+            get
+            {
+                return this.kontaktadressField;
+            }
+            set
+            {
+                this.kontaktadressField = value;
+            }
+        }
+        
+        [XmlElementAttribute("Relation", Namespace="http://statenspersonadressregister.se/schema/komponent/person/relation-1.2", Order=15)]
         public RelationTYPE[] Relation
         {
             get
@@ -1709,7 +2025,7 @@ namespace ServiceReference
             }
         }
         
-        [XmlElementAttribute("Fastighet", Namespace="http://statenspersonadressregister.se/schema/komponent/person/fastighetstaxering-1.1", Order=13)]
+        [XmlElementAttribute("Fastighet", Namespace="http://statenspersonadressregister.se/schema/komponent/person/fastighetstaxering-1.2", Order=16)]
         public FastighetTYPE[] Fastighet
         {
             get
@@ -1724,53 +2040,33 @@ namespace ServiceReference
     }
 
     [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1")]
-    public partial class PersonIdTYPE
-    {
-        private string fysiskPersonIdField;
-        
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.1", Order=0)]
-        public string FysiskPersonId
-        {
-            get
-            {
-                return this.fysiskPersonIdField;
-            }
-            set
-            {
-                this.fysiskPersonIdField = value;
-            }
-        }
-    }
-
-    [DebuggerStepThroughAttribute()]
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.0")]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1")]
     public partial class PersonsokningFragaTYPE
     {
+        
         private object[] itemsField;
         
         private ItemsChoiceType[] itemsElementNameField;
         
-        [XmlElementAttribute("DistriktKod", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("DistriktKodFrom", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("DistriktKodTom", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("Fodelsetid", typeof(DateTime), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", DataType="date", Order=0)]
-        [XmlElementAttribute("FodelsetidFran", typeof(DateTime), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", DataType="date", Order=0)]
-        [XmlElementAttribute("FodelsetidTill", typeof(DateTime), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", DataType="date", Order=0)]
-        [XmlElementAttribute("FonetiskSokning", typeof(FonetiskSokningTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("FornamnSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("ForsamlingKod", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("KommunKod", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("Kon", typeof(KonTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("LanKod", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("MellanEfternamnSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("NamnSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("PersonId", typeof(PersonIdTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("PostNr", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("PostNrFran", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("PostNrTill", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("PostortSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
-        [XmlElementAttribute("UtdelningsadressSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1", Order=0)]
+        [XmlElementAttribute("IdNummer", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/person/person-1.2", Order=0)]
+        [XmlElementAttribute("DistriktKod", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("DistriktKodFrom", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("DistriktKodTom", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("Fodelsedatum", typeof(DateTime), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", DataType="date", Order=0)]
+        [XmlElementAttribute("FodelsedatumFrom", typeof(DateTime), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", DataType="date", Order=0)]
+        [XmlElementAttribute("FodelsedatumTom", typeof(DateTime), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", DataType="date", Order=0)]
+        [XmlElementAttribute("FonetiskSokning", typeof(JaNejTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("FornamnSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("KommunKod", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("Kon", typeof(KonTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("LanKod", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("MellanEfternamnSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("NamnSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("PostNr", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("PostNrFrom", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("PostNrTom", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("PostortSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
+        [XmlElementAttribute("UtdelningsadressSokArgument", typeof(string), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2", Order=0)]
         [XmlChoiceIdentifierAttribute("ItemsElementName")]
         public object[] Items
         {
@@ -1799,130 +2095,174 @@ namespace ServiceReference
         }
     }
 
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1")]
-    public enum FonetiskSokningTYPE
-    {
-        J,
-        N,
-    }
-    
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1")]
-    public enum KonTYPE
-    {
-        M,
-        K,
-    }
-
-    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.0", IncludeInSchema=false)]
+    [XmlTypeAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1", IncludeInSchema=false)]
     public enum ItemsChoiceType
     {
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:DistriktKod")]
+        
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/person/person-1.2:IdNummer")]
+        IdNummer,
+        
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:DistriktKod")]
         DistriktKod,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:DistriktKodFrom")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:DistriktKodFrom")]
         DistriktKodFrom,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:DistriktKodTom")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:DistriktKodTom")]
         DistriktKodTom,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:Fodelsetid")]
-        Fodelsetid,
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:Fodelsedatum")]
+        Fodelsedatum,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:FodelsetidFran")]
-        FodelsetidFran,
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:FodelsedatumFrom")]
+        FodelsedatumFrom,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:FodelsetidTill")]
-        FodelsetidTill,
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:FodelsedatumTom")]
+        FodelsedatumTom,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:FonetiskSokning")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:FonetiskSokning")]
         FonetiskSokning,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:FornamnSokArgument")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:FornamnSokArgument")]
         FornamnSokArgument,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:ForsamlingKod")]
-        ForsamlingKod,
-        
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:KommunKod")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:KommunKod")]
         KommunKod,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:Kon")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:Kon")]
         Kon,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:LanKod")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:LanKod")]
         LanKod,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:MellanEfternamnSokArgument")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:MellanEfternamnSokArgument")]
         MellanEfternamnSokArgument,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:NamnSokArgument")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:NamnSokArgument")]
         NamnSokArgument,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:PersonId")]
-        PersonId,
-        
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:PostNr")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:PostNr")]
         PostNr,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:PostNrFran")]
-        PostNrFran,
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:PostNrFrom")]
+        PostNrFrom,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:PostNrTill")]
-        PostNrTill,
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:PostNrTom")]
+        PostNrTom,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:PostortSokArgument")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:PostortSokArgument")]
         PostortSokArgument,
         
-        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.1:UtdelningsadressSokArgument")]
+        [XmlEnumAttribute("http://statenspersonadressregister.se/schema/komponent/sok/sokargument-1.2:UtdelningsadressSokArgument")]
         UtdelningsadressSokArgument,
     }
 
     [DebuggerStepThroughAttribute()]
-    [MessageContractAttribute(WrapperName="SPARPersonsokningFraga", WrapperNamespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsfraga-1.0", IsWrapped=true)]
+    [XmlTypeAttribute(AnonymousType=true, Namespace="http://statenspersonadressregister.se/schema/personsok/2021.1/personsokningsvar")]
+    public partial class SPARPersonsokningSvar
+    {
+        
+        private PersonsokningFragaTYPE personsokningFragaField;
+        
+        private object[] itemsField;
+        
+        private string uUIDField;
+        
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1", Order=0)]
+        public PersonsokningFragaTYPE PersonsokningFraga
+        {
+            get
+            {
+                return this.personsokningFragaField;
+            }
+            set
+            {
+                this.personsokningFragaField = value;
+            }
+        }
+        
+        [XmlElementAttribute("OverstigerMaxAntalSvarsposter", typeof(OverstigerMaxAntalSvarsposterTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/undantag-1.0", Order=1)]
+        [XmlElementAttribute("Undantag", typeof(UndantagTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/undantag-1.0", Order=1)]
+        [XmlElementAttribute("PersonsokningSvarspost", typeof(AviseringPostTYPE), Order=1)]
+        public object[] Items
+        {
+            get
+            {
+                return this.itemsField;
+            }
+            set
+            {
+                this.itemsField = value;
+            }
+        }
+        
+        [XmlElementAttribute(Order=2)]
+        public string UUID
+        {
+            get
+            {
+                return this.uUIDField;
+            }
+            set
+            {
+                this.uUIDField = value;
+            }
+        }
+    }
+
+    //[EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [DebuggerStepThroughAttribute()]
+    [MessageContractAttribute(
+			WrapperName="SPARPersonsokningFraga", 
+			WrapperNamespace="http://statenspersonadressregister.se/schema/personsok/2021.1/personsokningfraga",
+			IsWrapped=true)]
     public partial class PersonSokRequest
     {
-        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/identifieringsinformation-1.0", Order=0)]
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/identifieringsinformation-1.0")]
-        public IdentifieringsInformationTYPE IdentifieringsInformation;
         
-        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.0", Order=1)]
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.0")]
+        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/metadata/identifieringsinformationWs-1.1", Order=0)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/metadata/identifieringsinformationWs-1.1")]
+        public IdentifieringsinformationTYPE Identifieringsinformation;
+
+        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1", Order=1)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1")]
         public PersonsokningFragaTYPE PersonsokningFraga;
+        
+        
         
         public PersonSokRequest()
         {
         }
         
-        public PersonSokRequest(IdentifieringsInformationTYPE IdentifieringsInformation, PersonsokningFragaTYPE PersonsokningFraga)
+        public PersonSokRequest(
+                IdentifieringsinformationTYPE Identifieringsinformation,
+                PersonsokningFragaTYPE PersonsokningFraga)
         {
-            this.IdentifieringsInformation = IdentifieringsInformation;
+            this.Identifieringsinformation = Identifieringsinformation;
             this.PersonsokningFraga = PersonsokningFraga;
         }
     }
 
     [DebuggerStepThroughAttribute()]
-    [MessageContractAttribute(WrapperName="SPARPersonsokningSvar", WrapperNamespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsvar-1.0", IsWrapped=true)]
+    [MessageContractAttribute(
+			WrapperName="SPARPersonsokningSvar", 
+			WrapperNamespace="http://statenspersonadressregister.se/schema/personsok/2021.1/personsokningsvar",
+			IsWrapped=true)]
     public partial class PersonSokResponse
     {
-        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.0", Order=0)]
-        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.0")]
+        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1", Order=0)]
+        [XmlElementAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsokparametrar-1.1")]
         public PersonsokningFragaTYPE PersonsokningFraga;
-        
-        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsvar-1.0", Order=1)]
-        [XmlElementAttribute("OverstigerMaxAntalSvarsposter", typeof(OverstigerMaxAntalSvarsposterTYPE))]
-        [XmlElementAttribute("PersonsokningSvarsPost", typeof(AviseringsPostTYPE))]
-        [XmlElementAttribute("Undantag", typeof(UndantagTYPE))]
+
+        [MessageBodyMemberAttribute(Namespace="http://statenspersonadressregister.se/schema/komponent/sok/personsokningsvar-1.1", Order=1)]
+        [XmlElementAttribute("OverstigerMaxAntalSvarsposter", typeof(OverstigerMaxAntalSvarsposterTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/undantag-1.0")]
+        [XmlElementAttribute("Undantag", typeof(UndantagTYPE), Namespace="http://statenspersonadressregister.se/schema/komponent/sok/undantag-1.0")]
+        [XmlElementAttribute("PersonsokningSvarspost", typeof(AviseringPostTYPE))]
+        [XmlElementAttribute("UUID", typeof(string))]
         public object[] Items;
-        
+
         public PersonSokResponse()
         {
-        }
-        
-        public PersonSokResponse(PersonsokningFragaTYPE PersonsokningFraga, object[] Items)
-        {
-            this.PersonsokningFraga = PersonsokningFraga;
-            this.Items = Items;
-        }
+        }   
     }
 
     public interface PersonsokServiceChannel : PersonsokService, IClientChannel
@@ -1932,6 +2272,7 @@ namespace ServiceReference
     [DebuggerStepThroughAttribute()]
     public partial class PersonsokServiceClient : ClientBase<PersonsokService>, PersonsokService
     {
+        
         /// <summary>
         /// Implement this partial method to configure the service endpoint.
         /// </summary>
@@ -1973,6 +2314,12 @@ namespace ServiceReference
         }
         
         [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<PersonSokResponse> PersonsokService.PersonSokAsync(PersonSokRequest request)
+        {
+            return base.Channel.PersonSokAsync(request);
+        }
+    
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
         PersonSokResponse PersonsokService.PersonSok(PersonSokRequest request)
         {
             return base.Channel.PersonSok(request);
@@ -1981,11 +2328,6 @@ namespace ServiceReference
         public PersonSokResponse PersonSok(PersonSokRequest request)
         {
             return base.Channel.PersonSok(request);
-        }
-        
-        public Task<PersonSokResponse> PersonSokAsync(PersonSokRequest request)
-        {
-            return base.Channel.PersonSokAsync(request);
         }
         
         public virtual Task OpenAsync()
@@ -2016,7 +2358,7 @@ namespace ServiceReference
         {
             if ((endpointConfiguration == EndpointConfiguration.PersonsokServiceSOAP))
             {
-                return new EndpointAddress("http://localhost/personsok");
+                return new EndpointAddress("http://localhost:8101/");
             }
             throw new InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }
@@ -2033,6 +2375,7 @@ namespace ServiceReference
         
         public enum EndpointConfiguration
         {
+            
             PersonsokServiceSOAP,
         }
     }

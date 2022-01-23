@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://statenspersonadressregister.se/schema/komponent/generellt/typ-1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://statenspersonadressregister.se/schema/komponent/generellt/typ-1.0"
+           elementFormDefault="qualified">
+    <xs:annotation>
+        <xs:appinfo>
+            <xs:documentation>
+                Skapad: 2021-09-10
+            </xs:documentation>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:simpleType name="JaNejTYPE">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="JA"/>
+            <xs:enumeration value="NEJ"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="KonTYPE">
+        <xs:annotation>
+            <xs:documentation>Kön</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MAN"/>
+            <xs:enumeration value="KVINNA"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

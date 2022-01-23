@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://statenspersonadressregister.se/schema/komponent/metadata/identifieringsinformationWs-1.1"
+           targetNamespace="http://statenspersonadressregister.se/schema/komponent/metadata/identifieringsinformationWs-1.1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:metainfo="http://statenspersonadressregister.se/schema/komponent/metadata/delademetaelement-1.0"
+           elementFormDefault="qualified">
+    <xs:import namespace="http://statenspersonadressregister.se/schema/komponent/metadata/delademetaelement-1.0" schemaLocation="DeladeMetaElement-1.0.xsd"/>
+    <xs:annotation>
+        <xs:appinfo>
+            <xs:documentation>
+                Skapad 2021-10-08
+            </xs:documentation>
+        </xs:appinfo>
+    </xs:annotation>
+
+    <xs:element name="Identifieringsinformation" type="IdentifieringsinformationTYPE"/>
+    <xs:complexType name="IdentifieringsinformationTYPE">
+        <xs:sequence>
+            <xs:element ref="KundNrLeveransMottagare"/>
+            <xs:element ref="KundNrSlutkund"/>
+            <xs:element ref="UppdragId"/>
+            <xs:element ref="SlutAnvandarId"/>
+            <xs:element ref="SlutAnvandarUtokadBehorighet" minOccurs="0" maxOccurs="4"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="KundNrLeveransMottagare" type="metainfo:KundNrTYPE">
+        <xs:annotation>
+            <xs:documentation>
+                Kundnummer i SPAR för den kund som äger organisationscertifikatet som används för att anropa tjänsten
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="KundNrSlutkund" type="metainfo:KundNrTYPE">
+        <xs:annotation>
+            <xs:documentation>
+                Kundnummer i SPAR för den kund som har fått tillstånd att anropa tjänsten
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="SlutAnvandarUtokadBehorighet" type="SlutAnvandarUtokadBehorighetTYPE">
+        <xs:annotation>
+            <xs:documentation>
+                Utökade behörigheter som ska användas i sökningen.
+                Kan var samma eller mindre, men aldrig mer än slutkundens behörighet.
+                Om inga utökade behörigheter anges, används enbart grundbehörighet.
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:simpleType name="SlutAnvandarUtokadBehorighetTYPE">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Relationer">
+                <xs:annotation>
+                    <xs:documentation>Utökad behörighet: relationer</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Medborgarskap">
+                <xs:annotation>
+                    <xs:documentation>Utökad behörighet: svenskt medborgarskap</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Taxering">
+                <xs:annotation>
+                    <xs:documentation>Utökad behörighet: födelsehemort, inkomst och fastighetsinnehav</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sekretess">
+                <xs:annotation>
+                    <xs:documentation>Utökad behörighet: sekretess</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="SlutAnvandarId" type="SlutAnvandarIdTYPE">
+        <xs:annotation>
+            <xs:documentation>
+                Användarid för användaren i slutkundens system, ingen kontroll görs på detta användarid men det
+                skrivs i SPARs loggar. Vid felsökning eller säkerhetsaudit är det ett absolut krav att slutkunden med
+                hjälp av detta id med säkerhet ska kunna avgöra vilken enskild person som använt tjänsten.
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:simpleType name="SlutAnvandarIdTYPE">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="256"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="UppdragId" type="metainfo:UppdragIdTYPE">
+        <xs:annotation>
+            <xs:documentation>
+                Av SPAR tilldelat uppdragsid för anropad tjänst för angiven slutkund och leveransmottagare.
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+</xs:schema>

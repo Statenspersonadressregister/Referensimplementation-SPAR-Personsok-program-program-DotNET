@@ -9,12 +9,12 @@ using NLog.Targets;
 namespace PersonsokImplementation
 {
     /// <summary>
-    /// En klass för att logga request- och responsemeddelanden till konsol och till loggfil.
+    /// En klass för att logga till konsol och till loggfil.
     /// </summary>
     public class PersonsokLogger
     {
         private readonly ILogger<PersonsokLogger> _logger;
-        
+
         public PersonsokLogger(ILogger<PersonsokLogger> logger)
         {
             _logger = logger;
@@ -60,7 +60,7 @@ namespace PersonsokImplementation
             LoggingConfiguration logConfig = new NLog.Config.LoggingConfiguration();
             FileTarget logfile = new NLog.Targets.FileTarget("logfile") { FileName = "personsok.log" };
             ConsoleTarget logconsole = new NLog.Targets.ConsoleTarget("logconsole");
-                                  
+
             logConfig.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, logconsole);
             logConfig.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logfile);
             NLog.LogManager.Configuration = logConfig;
@@ -69,7 +69,7 @@ namespace PersonsokImplementation
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
-            
+
             IServiceProvider serviceProvider = new ServiceCollection()
                 .AddTransient<PersonsokLogger>()
                 .AddLogging(loggingBuilder =>
