@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using PersonsokImplementation;
 using ServiceReference;
+using System;
 
 namespace Tests
 {   
@@ -37,9 +38,10 @@ namespace Tests
         [Test]
         public void PersonsokGiltigtPersonIdTest()
         {
-            PersonSokResponse response = Client.PersonSok(Personsok.CreatePersonIdRequest(Identifieringsinformation, "197912122384"));
+            PersonSokResponse response = Client.PersonSok(Personsok.CreatePersonIdRequest(Identifieringsinformation, "198106039228"));
             Assert.IsNotNull(response.Items);
-            Assert.AreEqual(1, response.Items.Length);
+            Assert.AreEqual(2, response.Items.Length);
+            AsserUUID(response.Items[1]);
             Assert.IsInstanceOf<AviseringPostTYPE>(response.Items[0]);
         }
 
@@ -50,7 +52,8 @@ namespace Tests
         public void PersonsokOgiltigtPersonIdTest()
         {
             PersonSokResponse response = Client.PersonSok(Personsok.CreatePersonIdRequest(Identifieringsinformation, "191212121212"));
-            Assert.IsEmpty(response.Items);
+            AsserUUID(response.Items[0]);
+            Assert.AreEqual(1, response.Items.Length);
         }
 
         /// <summary>
@@ -61,7 +64,8 @@ namespace Tests
         {
             PersonSokResponse response = Client.PersonSok(Personsok.CreateFonetisktNamnRequest(Identifieringsinformation, "Mikael M*"));
             Assert.IsNotNull(response.Items);
-            Assert.IsNotInstanceOf<OverstigerMaxAntalSvarsposterTYPE>(response.Items[0].GetType());
+            AsserUUID(response.Items[1]);
+            Assert.IsNotInstanceOf<OverstigerMaxAntalSvarsposterTYPE>(response.Items[0]);
         }
 
         /// <summary>
@@ -71,7 +75,8 @@ namespace Tests
         public void PersonsokFonetisktIngaTraffarTest()
         {
             PersonSokResponse response = Client.PersonSok(Personsok.CreateFonetisktNamnRequest(Identifieringsinformation, "NamnSomFörhoppningsvisInteFinns"));
-            Assert.IsEmpty(response.Items);   
+            Assert.AreEqual(1, response.Items.Length);
+            AsserUUID(response.Items[0]);
         }
 
         /// <summary>
@@ -80,15 +85,21 @@ namespace Tests
         [Test]
         public void PersonsokFonetisktMangaTraffarTest()
         {
-            PersonSokResponse response = Client.PersonSok(Personsok.CreateFonetisktNamnRequest(Identifieringsinformation, "An*"));
+            PersonSokResponse response = Client.PersonSok(Personsok.CreateFonetisktNamnRequest(Identifieringsinformation, "Efter*"));
             Assert.IsNotNull(response.Items);
             Assert.IsInstanceOf<OverstigerMaxAntalSvarsposterTYPE>(response.Items[0]);
+            AsserUUID(response.Items[1]);
         }
 
         [Test]
         public void PersonsokValidatorTest()
         {
             Assert.True(PersonsokValidator.IsPersonIdValid("197910312391"));
+        }
+
+        private void AsserUUID(object maybeUUID) {
+            Guid newGuid = Guid.Parse((string) maybeUUID);
+            Assert.IsNotNull(newGuid);            
         }
     }
 }

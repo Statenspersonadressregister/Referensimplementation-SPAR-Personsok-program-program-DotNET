@@ -35,7 +35,7 @@ namespace PersonsokImplementation
                 "Anställd X på avdelning Y, Testsökning C# .NET Core");
 
             Logger.LogInformation("Personsökning med ett giltigt personnummer");
-            PersonSokRequest giltigtPersonIdRequest = CreatePersonIdRequest(identifieringsInformation, "197912122384");
+            PersonSokRequest giltigtPersonIdRequest = CreatePersonIdRequest(identifieringsInformation, "197910312391");
             LogPersonsokningRequest(giltigtPersonIdRequest);
             PersonSokResponse giltigtPersonIdResponse = client.PersonSok(giltigtPersonIdRequest);
             LogPersonsokningResponse(giltigtPersonIdResponse);
@@ -59,7 +59,7 @@ namespace PersonsokImplementation
             LogPersonsokningResponse(fonetisktNamnResponse2);
 
             Logger.LogInformation("Personsökning med ett fonetiskt namn, med många träffar");
-            PersonSokRequest fonetisktNamnRequest3 = CreateFonetisktNamnRequest(identifieringsInformation, "An*");
+            PersonSokRequest fonetisktNamnRequest3 = CreateFonetisktNamnRequest(identifieringsInformation, "Efternamn*");
             LogPersonsokningRequest(fonetisktNamnRequest3);
             PersonSokResponse fonetisktNamnResponse3 = client.PersonSok(fonetisktNamnRequest3);
             LogPersonsokningResponse(fonetisktNamnResponse3);
