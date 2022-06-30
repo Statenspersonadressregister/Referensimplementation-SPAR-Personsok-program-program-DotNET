@@ -2,7 +2,7 @@
 
 Denna källkod är en referensimplementation av SPAR Personsök program-program version _2021.1_.
 
-Referensimplementationen är skriven för _.NET Core 5.0_ och använder _nuget_ för pakethantering.
+Referensimplementationen är skriven för _.NET Core 6.0_ och använder _nuget_ för pakethantering.
 
 Med hjälp av verktyget _svcutil_ har det skapats en tjänst från wsdl-filen som används för att anropa personsöktjänsten.
 Det går också bra att skapa upp tjänsten via _Visual Studio_ och menyalternativet '_Add Service Reference..._'.
