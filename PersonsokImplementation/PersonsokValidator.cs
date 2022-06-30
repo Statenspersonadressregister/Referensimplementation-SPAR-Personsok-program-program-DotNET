@@ -83,7 +83,9 @@ namespace PersonsokImplementation
                     settings.Schemas.Add(loadSchemaFromAssembly(xsdName));
                 }
                                
-                XmlReader reader = XmlReader.Create(message, settings).ReadSubtree();
+                XmlReader outerReader = XmlReader.Create(message, settings).ReadSubtree();
+                outerReader.ReadToFollowing("SPARPersonsokningFraga");
+                XmlReader reader = outerReader.ReadSubtree();
                 XmlDocument document = new XmlDocument();
                 document.Load(reader);
                 
