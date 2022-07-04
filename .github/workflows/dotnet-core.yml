@@ -1,0 +1,26 @@
+name: .NET
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+jobs:
+  build:
+    name: Bygge
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Installera beroenden
+      run: dotnet restore
+    - name: Bygg
+      run: dotnet build --configuration Release --no-restore
+    - name: Testa
+      run: dotnet test --no-restore --verbosity normal
