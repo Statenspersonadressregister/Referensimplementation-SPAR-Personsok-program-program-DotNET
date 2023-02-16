@@ -26,7 +26,7 @@ namespace PersonsokImplementation
                 "https://kt-ext-ws.statenspersonadressregister.se/2021.1/",
                 "kt-ext-ws.statenspersonadressregister.se",
                 "Kommun_A.p12",
-                "5761213661378233",
+                "4729451359506045",
                 "DigiCert.pem");
             IdentifieringsinformationTYPE identifieringsInformation = CreateIdentifieringsInformation(
                 500243,
