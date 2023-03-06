@@ -23,7 +23,7 @@ namespace Tests
                 "https://kt-ext-ws.statenspersonadressregister.se/2021.1/",                 
                 "kt-ext-ws.statenspersonadressregister.se", 
                 "Kommun_A.p12",
-                "5761213661378233",
+                "4611510421732432",
                 "DigiCert.pem");
             Identifieringsinformation = Personsok.CreateIdentifieringsInformation(
                 500243, 
