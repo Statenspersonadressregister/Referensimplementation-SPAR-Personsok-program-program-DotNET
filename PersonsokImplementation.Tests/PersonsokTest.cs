@@ -20,8 +20,8 @@ namespace Tests
         public void Setup()
         {
             Client = Personsok.CreatePersonsokServiceClient(
-                "https://kt-ext-ws.statenspersonadressregister.se/2021.1/",                 
-                "kt-ext-ws.statenspersonadressregister.se", 
+                "https://test-personsok.statenspersonadressregister.se/2021.1/",
+                "test-personsok.statenspersonadressregister.se",
                 "Kommun_A.p12",
                 "4611510421732432",
                 "DigiCert.pem");
