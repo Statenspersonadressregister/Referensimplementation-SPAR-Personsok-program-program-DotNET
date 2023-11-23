@@ -1,5 +1,8 @@
 # Referensimplementation SPAR Personsök program-program
 
+> **Obeservera:** Referensimplementationer för senare versioner av SPAR Personsök program-program finns på https://www.statenspersonadressregister.se  
+> Denna Github-organisation kommer att upphöra per 2024-05-31.
+
 Denna källkod är en referensimplementation av SPAR Personsök program-program version _2021.1_.
 
 Referensimplementationen är skriven för _.NET Core 6.0_ och använder _nuget_ för pakethantering.
